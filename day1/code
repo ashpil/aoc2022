@@ -1,0 +1,35 @@
+: read-line-stdin ( c-addr u -- u ) stdin read-line throw drop ;
+: parse-number ( c-addr u -- n ) 0 0 2swap >number drop drop drop ; 
+: sum-until-nothing ( c-addr -- n)
+    0 swap
+    begin
+        dup dup 6 read-line-stdin parse-number rot over + rot dup 6 erase rot
+    0 = until
+    drop
+;
+
+10 allocate throw constant mem
+variable 1max-so-far
+variable 2max-so-far
+variable 3max-so-far
+0 1max-so-far !
+0 2max-so-far !
+0 3max-so-far !
+
+: do-thing ( -- n )
+    begin
+        mem sum-until-nothing dup
+        dup 1max-so-far @ > if
+            2max-so-far @ 3max-so-far !
+            1max-so-far @ 2max-so-far !
+            1max-so-far !
+        else dup 2max-so-far @ > if
+            2max-so-far @ 3max-so-far !
+            2max-so-far !
+        else dup 3max-so-far @ > if
+            3max-so-far !
+        then then then
+    0 = until
+;
+
+do-thing 1max-so-far @ 2max-so-far @ 3max-so-far @ + + . cr bye
