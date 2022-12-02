@@ -1,19 +1,17 @@
 : read-line-stdin ( c-addr u -- u ) stdin read-line throw drop ;
 : parse-number ( c-addr u -- n ) 0 0 2swap >number drop drop drop ; 
-: sum-until-nothing ( c-addr -- n)
-    0 swap
+: sum-from-stdin-until-nothing ( -- n )
+    0 pad
     begin
-        dup dup 6 read-line-stdin parse-number rot over + rot dup 6 erase rot
+        dup dup 6 read-line-stdin parse-number rot over + rot rot
     0 = until
     drop
 ;
 
-10 allocate throw constant mem
-
 : part1 ( -- n )
     0
     begin
-        mem sum-until-nothing
+        sum-from-stdin-until-nothing
         dup rot max swap
     0 = until
 ;
@@ -21,7 +19,7 @@
 : part2 ( -- n )
     0 0 0 { 1max 2max 3max }
     begin
-        mem sum-until-nothing dup
+        sum-from-stdin-until-nothing dup
         dup 1max > if
             2max to 3max
             1max to 2max
