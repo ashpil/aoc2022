@@ -9,6 +9,15 @@
 ;
 
 10 allocate throw constant mem
+
+: part1 ( -- n )
+    0
+    begin
+        mem sum-until-nothing
+        dup rot max swap
+    0 = until
+;
+
 variable 1max-so-far
 variable 2max-so-far
 variable 3max-so-far
@@ -16,7 +25,7 @@ variable 3max-so-far
 0 2max-so-far !
 0 3max-so-far !
 
-: do-thing ( -- n )
+: part2 ( -- n )
     begin
         mem sum-until-nothing dup
         dup 1max-so-far @ > if
@@ -30,6 +39,6 @@ variable 3max-so-far
             3max-so-far !
         then then then
     0 = until
+    1max-so-far @ 2max-so-far @ 3max-so-far @ + +
 ;
 
-do-thing 1max-so-far @ 2max-so-far @ 3max-so-far @ + + . cr bye
